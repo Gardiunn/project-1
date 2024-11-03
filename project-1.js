@@ -8,68 +8,66 @@ import { I18NMixin } from "@haxtheweb/i18n-manager/lib/I18NMixin.js";
 
 /**
  * `project-1`
- * 
+ *
  * @demo index.html
  * @element project-1
  */
 export class project1 extends DDDSuper(I18NMixin(LitElement)) {
-
   static get tag() {
     return "project-1";
   }
 
   constructor() {
     super();
-    this.title = "";
-    this.t = this.t || {};
-    this.t = {
-      ...this.t,
-      title: "Title",
-    };
-    this.registerLocalization({
-      context: this,
-      localesPath:
-        new URL("./locales/project-1.ar.json", import.meta.url).href +
-        "/../",
-      locales: ["ar", "es", "hi", "zh"],
-    });
   }
 
   // Lit reactive properties
   static get properties() {
-    return {
-      ...super.properties,
-      title: { type: String },
-    };
+    return {};
   }
 
   // Lit scoped styles
   static get styles() {
-    return [super.styles,
-    css`
-      :host {
-        display: block;
-        color: var(--ddd-theme-primary);
-        background-color: var(--ddd-theme-accent);
-        font-family: var(--ddd-font-navigation);
-      }
-      .wrapper {
-        margin: var(--ddd-spacing-2);
-        padding: var(--ddd-spacing-4);
-      }
-      h3 span {
-        font-size: var(--project-1-label-font-size, var(--ddd-font-size-s));
-      }
-    `];
+    return [
+      super.styles,
+      css`
+        :host {
+        }
+        #input {
+          width: 50%;
+          font-size: 24px;
+          padding: var(--ddd-spacing-4);
+        }
+        #analyze {
+          font-size: 24px;
+          padding: var(--ddd-spacing-4);
+          margin-left: var(--ddd-spacing-2);
+        }
+        #inputs {
+          display: flex;
+          justify-content: center;
+          margin: var(--ddd-spacing-4);
+        }
+
+        #results {
+          border: var(--ddd-border-md);
+          height: 500px;
+          width: 75%;
+        }
+      `,
+    ];
   }
 
   // Lit render the HTML
   render() {
     return html`
-<div class="wrapper">
-  <h3><span>${this.t.title}:</span> ${this.title}</h3>
-  <slot></slot>
-</div>`;
+      <div id="inputs">
+        <input id="input" placeholder="Site address here" />
+        <button id="analyze">Analyze</button>
+      </div>
+
+      <div id="results"></div>
+    `;
   }
 
   /**
