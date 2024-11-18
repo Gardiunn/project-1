@@ -59,6 +59,11 @@ export class project1 extends DDDSuper(I18NMixin(LitElement)) {
         #title {
           text-align: center;
         }
+        #overview {
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: center;
+        }
         site-card {
           width: 20%;
           min-width: 300px;
@@ -78,7 +83,8 @@ export class project1 extends DDDSuper(I18NMixin(LitElement)) {
         <input id="input" placeholder="Site address here" />
         <button id="analyze" @click=${this.analyzeSite}>Analyze</button>
       </div>
-      <div id="title"></div>
+
+      <div id="overview"></div>
 
       <div id="results"></div>
     `;
@@ -102,44 +108,77 @@ export class project1 extends DDDSuper(I18NMixin(LitElement)) {
   }
 
   async analyzeSite() {
-    // Get the JSON data
-    const site = this.checkSite();
-    const response = await fetch(site);
-    const data = await response.json();
-
-    // Set the title and items
-    title = data.title;
-    items = data.items;
-
-    // get container
-    const container = this.shadowRoot.getElementById("results");
-    // clear container
-    container.innerHTML = "";
-    // get title element
-    const titleElement = this.shadowRoot.getElementById("title");
-    //set title
-    titleElement.innerHTML = data.title;
-
-    for (let i = 0; i < items.length; i++) {
-      const card = document.createElement("site-card");
-
-      card.name = items[i].title;
-      card.description = items[i].description;
-      card.createdTime = this.dateToString(items[i].metadata.created);
-      card.updatedTime = this.dateToString(items[i].metadata.updated);
-
-      if (items[i].metadata.images.length == 0) {
-        card.logo =
-          "https://iam.hax.psu.edu/bmh6200/sites/256/assets/banner.jpg";
-      } else {
-        card.logo = siteURL + items[i].metadata.images[0];
+    try {
+      // Get the JSON data
+      const site = this.checkSite();
+      if (!site) {
+        throw new Error("Invalid site URL");
       }
-      console.log(card.logo);
 
-      container.appendChild(card);
+      const response = await fetch(site);
+      if (!response.ok) {
+        throw new Error("Failed to fetch site data");
+      }
+
+      const data = await response.json();
+
+      // Get overview info
+      const name = data.metadata.site.name;
+      const description = data.description;
+      const logo = siteURL + "/" + data.metadata.site.logo;
+      const created = this.dateToString(data.metadata.site.created);
+      const updated = this.dateToString(data.metadata.site.updated);
+      const theme = data.metadata.theme.variables.hexCode;
+
+      // Get overview container
+      const overContainer = this.shadowRoot.getElementById("overview");
+      // Clear container
+      overContainer.innerHTML = "";
+
+      // Create overview card
+      const overview = document.createElement("site-card");
+      overview.name = name;
+      overview.description = description;
+      overview.logo = logo;
+      overview.createdTime = created;
+      overview.updatedTime = updated;
+      overview.siteURL = siteURL;
+      overview.style.borderColor = theme;
+
+      overContainer.appendChild(overview);
+
+      // Get items array
+      const items = data.items;
+
+      // get container
+      const container = this.shadowRoot.getElementById("results");
+      // clear container
+      container.innerHTML = "";
+
+      for (let i = 0; i < items.length; i++) {
+        const card = document.createElement("site-card");
+
+        card.name = items[i].title;
+        card.description = items[i].description;
+        card.createdTime = this.dateToString(items[i].metadata.created);
+        card.updatedTime = this.dateToString(items[i].metadata.updated);
+        card.siteURL = siteURL + "/" + items[i].slug;
+        card.sourceURL = siteURL;
+        card.style.borderColor = theme;
+
+        if (items[i].metadata.images.length == 0) {
+          card.logo =
+            "https://iam.hax.psu.edu/bmh6200/sites/256/assets/banner.jpg";
+        } else {
+          card.logo = siteURL + "/" + items[i].metadata.images[0];
+        }
+        container.appendChild(card);
+      }
+    } catch (error) {
+      console.error("Error analyzing site:", error);
+      const container = this.shadowRoot.getElementById("title");
+      container.innerHTML = `<p>Error: ${error.message}</p>`;
     }
-
-    console.log(items);
   }
 
   /**

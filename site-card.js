@@ -9,12 +9,14 @@ export class siteCard extends DDDSuper(I18NMixin(LitElement)) {
 
   constructor() {
     super();
-    this.name = "Hax the Web";
-    this.description = "A collection of web components for building websites";
-    this.logo =
-      "https://th.bing.com/th/id/OIP.SQQFm-oK6Lu_eMaiGGRI1AHaE8?rs=1&pid=ImgDetMain";
-    this.createdTime = "2021-10-01";
-    this.updatedTime = "2021-10-01";
+    this.name = "";
+    this.description = "";
+    this.logo = "";
+    this.createdTime = "";
+    this.updatedTime = "";
+    this.siteURL = "";
+    this.sourceURL = "";
+    this.theme = "#121212";
   }
 
   // Lit reactive properties
@@ -25,6 +27,8 @@ export class siteCard extends DDDSuper(I18NMixin(LitElement)) {
       logo: { type: String },
       createdTime: { type: String },
       updatedTime: { type: String },
+      siteURL: { type: String },
+      sourceURL: { type: String },
     };
   }
 
@@ -33,18 +37,26 @@ export class siteCard extends DDDSuper(I18NMixin(LitElement)) {
     return [
       super.styles,
       css`
+        .source {
+          font-size: 12px;
+          text-align: left;
+          margin: 0 var(--ddd-spacing-2);
+        }
         .card {
           display: flex;
           flex-direction: column;
           text-align: center;
+          color: white;
+          border-width: thick;
         }
         .image {
-          width: 75%;
+          width: 70%;
           max-height: 200px;
-          margin: var(--ddd-spacing-12) auto;
+          margin: var(--ddd-spacing-4) var(--ddd-spacing-12);
+          padding-bottom: var(--ddd-spacing-16);
         }
         .logo {
-          width: 100%;
+          width: 75%;
           border-radius: var(--ddd-radius-md);
         }
         .dates {
@@ -57,6 +69,7 @@ export class siteCard extends DDDSuper(I18NMixin(LitElement)) {
         }
         .info {
           position: absolute;
+          width: 100%;
           bottom: var(--ddd-spacing-16);
         }
         .name {
@@ -78,20 +91,25 @@ export class siteCard extends DDDSuper(I18NMixin(LitElement)) {
   // Lit render the HTML
   render() {
     return html`
-      <div class="card">
-        <div class="image">
-          <img class="logo" src="${this.logo}" alt="${this.name}" />
-        </div>
-        <div class="info">
-          <h2 class="name">${this.name}</h2>
-          <p class="description">${this.description}</p>
-        </div>
+      <a class="source" href="${this.sourceURL}" target="_blank"
+        >Open site source</a
+      >
+      <a href="${this.siteURL}" target="_blank">
+        <div class="card">
+          <div class="image">
+            <img class="logo" src="${this.logo}" alt="${this.name}" />
+          </div>
+          <div class="info">
+            <h2 class="name">${this.name}</h2>
+            <p class="description">${this.description}</p>
+          </div>
 
-        <div class="dates">
-          <div class="changed">Created ${this.createdTime}</div>
-          <div class="changed">Updated ${this.updatedTime}</div>
+          <div class="dates">
+            <div class="changed">Created ${this.createdTime}</div>
+            <div class="changed">Updated ${this.updatedTime}</div>
+          </div>
         </div>
-      </div>
+      </a>
     `;
   }
 
