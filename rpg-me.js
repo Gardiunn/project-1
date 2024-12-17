@@ -76,11 +76,15 @@ export class RpgMe extends DDDSuper(I18NMixin(LitElement)) {
           color: white;
         }
         .controls {
-          min-width: 300px;
+          width: 50%;
+          margin-top: var(--ddd-spacing-18);
           text-align: left;
           display: grid;
           grid-template-columns: 1fr 1fr;
           gap: var(--ddd-spacing-5);
+          background-color: gray;
+          border-radius: var(--ddd-spacing-1);
+          padding: var(--ddd-spacing-5);
         }
         wired-input,
         wired-checkbox,
@@ -133,6 +137,10 @@ export class RpgMe extends DDDSuper(I18NMixin(LitElement)) {
         .notification.show {
           opacity: 1;
         }
+        #issue {
+          margin: auto;
+          color: black;
+        }
       `,
     ];
   }
@@ -158,7 +166,7 @@ export class RpgMe extends DDDSuper(I18NMixin(LitElement)) {
           ></rpg-character>
         </div>
         <div class="controls">
-          <div>
+          <div class="leftControls">
             <label for="characterNameInput">Character Name:</label>
             <wired-input
               id="characterNameInput"
@@ -278,6 +286,9 @@ export class RpgMe extends DDDSuper(I18NMixin(LitElement)) {
           </div>
 
           <button @click="${this._generateShareLink}">Share</button>
+          <a id="issue" href="https://github.com/haxtheweb/issues/issues/1414"
+            >GitHub Issue</a
+          >
         </div>
       </div>
       <div id="notification" class="notification"></div>
