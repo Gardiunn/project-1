@@ -1,5 +1,5 @@
 /**
- * Copyright 2024 eglicky
+ * Copyright 2024 gardiunn
  * @license Apache-2.0, see LICENSE for full text.
  */
 
@@ -34,7 +34,6 @@ export class RpgMe extends DDDSuper(I18NMixin(LitElement)) {
       walking: false,
       circle: false,
     };
-    console.log(this.character.seed);
     this._applySeedToSettings(); // Ensure consistent character style on initialization
   }
 
@@ -381,7 +380,6 @@ export class RpgMe extends DDDSuper(I18NMixin(LitElement)) {
 
     if (params.has("seed")) {
       this.character.seed = params.get("seed");
-      console.log(this.character.seed);
       this._applySeedToSettings(); // Apply the seed to settings
     }
 
