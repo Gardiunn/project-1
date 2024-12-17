@@ -102,11 +102,10 @@ export class RpgMe extends DDDSuper(I18NMixin(LitElement)) {
           margin-top: var(--ddd-spacing-3);
           padding: var(--ddd-spacing-3) var(--ddd-spacing-5);
           cursor: pointer;
-          background-color: #007bff;
+          background-color: var(--ddd-primary-color);
           color: white;
-          border: 1px solid #0056b3;
           border-radius: var(--ddd-spacing-1);
-          font-size: 14px;
+          font-size: 12px;
           transition: background-color 0.3s ease, border-color 0.3s ease;
         }
         button:hover {
@@ -278,9 +277,7 @@ export class RpgMe extends DDDSuper(I18NMixin(LitElement)) {
             >
           </div>
 
-          <button @click="${this._generateShareLink}">
-            Generate Share Link
-          </button>
+          <button @click="${this._generateShareLink}">Share</button>
         </div>
       </div>
       <div id="notification" class="notification"></div>
